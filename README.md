@@ -17,7 +17,9 @@ ansible-playbook site.yml --tags=launch-instance
 
 7. Create replica set
 ansible-playbook site.yml --tags=primary
+
 ansible-playbook site.yml --tags=slave
+
 ansible-playbook site.yml --tags=arbiter
 
 
