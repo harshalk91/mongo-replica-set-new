@@ -15,7 +15,8 @@ touch vault_pass.txt & enter the secret password
 6. Launch instanecs
 ansible-playbook site.yml --tags=launch-instance
 
-7. Create replica set
+7. Create replica set:
+
 ansible-playbook site.yml --tags=primary
 
 ansible-playbook site.yml --tags=slave
