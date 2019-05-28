@@ -1,6 +1,6 @@
 ---
-- name: include group vars
-  include_vars: group_vars/mongo-rs.yml
+#- name: include group vars
+#  include_vars: group_vars/mongo-rs.yml
 
 - name: Setup mongo repository
   copy:
@@ -22,9 +22,9 @@
     backup: yes
   become: yes
 
-- name: Start MongoDB Service
-  systemd:
-    name: mongod
-    state: started
-    enabled: yes
-  become: yes
+#- name: Start MongoDB Service
+#  systemd:
+#    name: mongod
+#    state: started
+#    enabled: yes
+#  become: yes

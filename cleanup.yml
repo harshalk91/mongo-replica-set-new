@@ -1,5 +1,5 @@
 ---
- - hosts: mongodb-primary
+ - hosts: mongo-arbiter
    gather_facts: false
    tasks:
      - name: remove mongo

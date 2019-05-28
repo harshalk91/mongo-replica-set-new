@@ -46,9 +46,9 @@
     backup: yes
   become: yes
 
-- name: Start MongoDB Service
-  systemd:
-    name: mongod
-    state: started
-    enabled: yes
-  become: yes
+#- name: Start MongoDB Service
+#  systemd:
+#    name: mongod
+#    state: started
+#    enabled: yes
+#  become: yes

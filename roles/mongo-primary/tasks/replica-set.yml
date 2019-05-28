@@ -24,7 +24,7 @@
 - name: restart mongo
   systemd: 
     name: mongod
-    state: restarted     
+    state: stopped
   become: true
 
 - name: Copy replica set config
@@ -36,6 +36,39 @@
     - mongo-admin-user.js
     - add-slave-arbiter.js
 
+- name: restart mongo
+  systemd:
+    name: mongod
+    state: stopped
+  become: true
+
+- name: remove comment
+  replace:
+    path: /etc/mongod.conf
+    regexp: "^#replication:"
+    replace: "replication:"
+  become: true
+
+- name: Create /data/db
+  file:
+    path: /data/db
+    owner: mongod
+    group: mongod
+    mode: '0755'
+    recurse: yes
+  become: yes
+
+- name: kill existing mongodb process
+  shell: "kill -9 $(pidof mongod)"
+  ignore_errors: yes
+  become: true
+
+- name: Start mongo replica set 
+  command: "mongod --fork --dbpath /data/db --replSet my-mongo-set --bind_ip 0.0.0.0 --logpath /var/log/mongod.log"
+  async: 45
+  poll: 0
+  become: yes
+
 - name: Ensure replica set exists
   shell: "mongo < /home/ec2-user/mongo-replica-set.js && sleep 15"
 
@@ -44,3 +77,4 @@
 
 - name: Create Administrator user
   shell: "mongo < /home/ec2-user/mongo-admin-user.js"
+  ignore_errors: yes
