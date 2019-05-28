@@ -1,0 +1,22 @@
+---
+ - hosts: mongo-arbiter
+   gather_facts: true
+   roles:
+     - roles/mongodb-rs
+   tags: 
+   - arbiter
+   
+ - hosts: mongo-secondary
+   gather_facts: true
+   roles:
+     - roles/mongodb-rs
+   tags: 
+   - slave
+ 
+ 
+ - hosts: mongodb-primary
+   gather_facts: true
+   roles:
+     - roles/mongo-primary
+   tags:
+     - primary

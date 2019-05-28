@@ -1,0 +1,25 @@
+---
+- name: include secrets
+  include_vars: secrets.yml
+
+- name: Launching EC2 Instances
+  ec2:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ region }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    group: "{{ security_group }}"
+    image: "{{ image }}"
+    wait: yes
+    wait_timeout: 500
+    count: 3
+    vpc_subnet_id: "{{ vpc_subnet_id }}"
+    assign_public_ip: yes
+    instance_tags:
+      db: mongodb-cluster
+  register: ec2
+
+- name: print ec2 details
+  debug:
+    msg: "{{ ec2 }}"

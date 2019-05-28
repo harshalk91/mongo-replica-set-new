@@ -1,0 +1,3 @@
+---
+# tasks file for aws-instance
+- include: launch_instance.yml

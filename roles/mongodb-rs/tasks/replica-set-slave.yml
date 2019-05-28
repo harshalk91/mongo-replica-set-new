@@ -1,0 +1,31 @@
+---
+- name: include group vars
+  include_vars: group_vars/mongo-rs.yml
+
+- name: setup pip
+  shell: "curl 'https://bootstrap.pypa.io/get-pip.py' -o 'get-pip.py'"
+  become: true
+
+- name: get pip
+  shell: "python get-pip.py"
+  become: true
+
+- name: enable replication
+  lineinfile:
+    path: /etc/mongod.conf
+    insertafter: "^#replication:"
+    line: "  replSetName: my-mongo-set"
+  become: true
+
+- name: remove comment
+  replace:
+    path: /etc/mongod.conf
+    regexp: "^#replication:"
+    replace: "replication:"
+  become: true
+
+- name: restart mongo
+  systemd:
+    name: mongod
+    state: restarted
+  become: true

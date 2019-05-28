@@ -1,0 +1,9 @@
+---
+ - hosts: mongodb-primary
+   gather_facts: false
+   tasks:
+     - name: remove mongo
+       yum:
+         name: mongodb*
+         state: absent
+       become: true

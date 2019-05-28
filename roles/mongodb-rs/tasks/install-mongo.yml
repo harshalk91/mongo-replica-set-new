@@ -1,0 +1,54 @@
+---
+- name: include group vars
+  include_vars: group_vars/mongo-rs.yml
+
+#- name: Add /etc/hosts entry
+#  lineinfile:
+#    dest: /etc/hosts
+#    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].ansible_fqdn }} {{ hostvars[item].ansible_hostname }}"
+#    state: present
+#  with_items: "{{ groups.all }}"
+#  become: yes
+
+#- name: Add /etc/hosts entry
+#  lineinfile:
+#    dest: /etc/hosts
+#    line: "{{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}"
+#    state: present
+#  with_items: "{{ groups.all }}"
+#  become: yes
+
+- name: Setup mongo repository
+  copy:
+    src: files/mongodb-org-4.0.repo
+    dest: /etc/yum.repos.d/
+  become: yes
+
+
+- name: Install MongoDB Packages
+  yum:
+    name: mongodb-org
+    state: present
+  become: yes
+
+#- name: Copy mongod conf
+#  template:
+#    src: mongod.conf.j2
+#    dest: /etc/mongod.conf
+#    backup: yes
+#  become: yes
+
+- name: Replace bind ip
+  replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+    backup: yes
+  become: yes
+
+- name: Start MongoDB Service
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+  become: yes

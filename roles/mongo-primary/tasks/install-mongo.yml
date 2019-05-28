@@ -1,0 +1,30 @@
+---
+- name: include group vars
+  include_vars: group_vars/mongo-rs.yml
+
+- name: Setup mongo repository
+  copy:
+    src: files/mongodb-org-4.0.repo
+    dest: /etc/yum.repos.d/
+  become: yes
+
+- name: Install MongoDB Packages
+  yum:
+    name: mongodb-org
+    state: present
+  become: yes
+
+- name: Replace bind ip
+  replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+    backup: yes
+  become: yes
+
+- name: Start MongoDB Service
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+  become: yes

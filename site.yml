@@ -1,0 +1,3 @@
+---
+- include: launch_instance.yml
+- include: mongo.yml

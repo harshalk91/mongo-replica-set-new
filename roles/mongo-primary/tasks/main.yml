@@ -1,0 +1,4 @@
+---
+# tasks file for mongo-primary
+- include: install-mongo.yml
+- include: replica-set.yml

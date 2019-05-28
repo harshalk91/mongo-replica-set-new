@@ -1,0 +1,5 @@
+---
+# tasks file for mongodb-rs
+- include: install-mongo.yml
+#- include: replica-set.yml
+- include: replica-set-slave.yml
